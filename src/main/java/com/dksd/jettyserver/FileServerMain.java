@@ -1,7 +1,10 @@
 package com.dksd.jettyserver;
 
-import com.dksd.common.app.properties.AbstractProperties;
 import org.apache.log4j.PropertyConfigurator;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -21,12 +24,24 @@ public class FileServerMain {
             if (args.length < 1) {
                 printUsage();
             } else {
-                FileServerSecure fs = new FileServerSecure(AbstractProperties.load(args[0]));
+                FileServerSecure fs = new FileServerSecure(load(args[0]));
                 fs.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static Properties load(String fileName) {
+        final Properties prop = new Properties();
+        try {
+            InputStream is = new FileInputStream(new File(fileName));
+            prop.load(is);
+
+        } catch (Exception ep) {
+            ep.printStackTrace();
+        }
+        return prop;
     }
 
     private static void printUsage() {
