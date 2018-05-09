@@ -1,10 +1,7 @@
 package com.dksd.jettyserver;
 
 import com.dksd.common.app.properties.AbstractProperties;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
-
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -24,7 +21,7 @@ public class FileServerMain {
             if (args.length < 1) {
                 printUsage();
             } else {
-                final FileServerSecure fs = new FileServerSecure(AbstractProperties.load(args[0]));
+                FileServerSecure fs = new FileServerSecure(AbstractProperties.load(args[0]));
                 fs.start();
             }
         } catch (Exception e) {

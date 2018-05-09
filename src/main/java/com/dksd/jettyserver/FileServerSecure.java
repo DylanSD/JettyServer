@@ -1,4 +1,4 @@
-package com.dksd.comms.server;
+package com.dksd.jettyserver;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -26,6 +26,7 @@ import java.util.Properties;
  */
 public class FileServerSecure {
 
+    protected Server server;
     private Properties properties;
 
     public FileServerSecure(Properties properties) throws IOException {
