@@ -34,9 +34,7 @@ public class FileServerSecure {
     private String keystorePassword;
     private String keystorePath;
     private String webappPath;
-    private String certificatePath;
     private String welcomePage;
-    private String domain;
 
     public FileServerSecure(Properties properties) {
         this.properties = properties;
