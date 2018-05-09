@@ -22,7 +22,6 @@
                 </property>
             </activation>
 
-
             <build>
                 <plugins>
                     <plugin>

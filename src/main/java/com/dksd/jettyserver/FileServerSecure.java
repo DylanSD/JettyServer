@@ -31,9 +31,10 @@ public class FileServerSecure {
     private int httpsPort;
     private int timeout = 500000;
     private int bufferSize = 32768;
-    private String keyStorePassword;
+    private String keystorePassword;
     private String keystorePath;
-    private String webappRoot;
+    private String webappPath;
+    private String certificatePath;
     private String welcomePage;
     private String domain;
 
@@ -45,11 +46,10 @@ public class FileServerSecure {
     private void setProperties(Properties properties) {
         httpPort = Integer.parseInt(properties.getProperty("http.port"));
         httpsPort = Integer.parseInt(properties.getProperty("https.port"));
-        keyStorePassword = properties.getProperty("cert.keystore.password");
-        webappRoot = properties.getProperty("webapp.root");
+        keystorePath = properties.getProperty("cert.keystore.path");
+        keystorePassword = properties.getProperty("cert.keystore.password");
+        webappPath = properties.getProperty("webapp.path");
         welcomePage = properties.getProperty("welcome.html.page");
-        domain = properties.getProperty("domain");
-        keystorePath = "/etc/letsencrypt/live/" + domain + "/keystore.jks";
     }
 
     public void start() throws Exception {
@@ -76,7 +76,7 @@ public class FileServerSecure {
             http.setPort(httpPort);
             http.setIdleTimeout(timeout);
 
-            KeyStore.getInstance("JKS").load(new FileInputStream(new File(keystorePath)), keyStorePassword.toCharArray());
+            KeyStore.getInstance("JKS").load(new FileInputStream(new File(keystorePath)), keystorePassword.toCharArray());
             // SSL Context Factory for HTTPS and SPDY
             // SSL requires a certificate so we configure a factory for ssl contents with information pointing to what
             // keystore the ssl connection needs to know about. Much more configuration is available the ssl context,
@@ -99,8 +99,8 @@ import java.security.cert.X509Certificate;
             }*/
 
             sslContextFactory.setKeyStorePath(keystorePath);
-            sslContextFactory.setKeyStorePassword(keyStorePassword);
-            sslContextFactory.setKeyManagerPassword(keyStorePassword);
+            sslContextFactory.setKeyStorePassword(keystorePassword);
+            sslContextFactory.setKeyManagerPassword(keystorePassword);
 
             // HTTPS Configuration
             // A new HttpConfiguration object is needed for the next connector and you can pass the old one as an
@@ -124,7 +124,7 @@ import java.security.cert.X509Certificate;
 
         resourceHandler = new ResourceHandler();
         resourceHandler.setWelcomeFiles(new String[]{welcomePage});
-        resourceHandler.setResourceBase(webappRoot);
+        resourceHandler.setResourceBase(webappPath);
         resourceHandler.setCacheControl(MAX_AGE_86400);
         resourceHandler.setEtags(true);
 
